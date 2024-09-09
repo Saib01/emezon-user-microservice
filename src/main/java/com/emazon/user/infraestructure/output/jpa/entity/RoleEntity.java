@@ -3,22 +3,23 @@ package com.emazon.user.infraestructure.output.jpa.entity;
 
 import com.emazon.user.domain.utils.RoleEnum;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
+import static com.emazon.user.infraestructure.util.InfrastructureEntities.ID_ROLE;
+import static com.emazon.user.infraestructure.util.InfrastructureEntities.TABLE_ROLES;
 
 
 @Entity
-@Table(name="roles")
-@Data
+@Table(name=TABLE_ROLES)
+@Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 public class RoleEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id_rol",nullable = false)
+    @Column(name=ID_ROLE,nullable = false)
     private Long id;
     @Column(nullable = false, unique = true)
     @Enumerated(EnumType.STRING)

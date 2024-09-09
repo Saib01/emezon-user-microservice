@@ -37,6 +37,7 @@ public class ControllerAdvisor {
 
         exceptionMap.put(UserEmailAlreadyExistException.class, USER_EMAIL_ALREADY_EXISTS.getMessage());
         exceptionMap.put(UserIdDocumentAlreadyExistException.class, USER_ID_DOCUMENT_ALREADY_EXISTS.getMessage());
+        exceptionMap.put(UserBadCredentialsException.class, USER_PASSWORD_INCORRECT.getMessage());
     }
     private ResponseEntity<Map<String, String>> buildResponse(HttpStatus status, String message) {
         return ResponseEntity.status(status)
@@ -71,4 +72,13 @@ public class ControllerAdvisor {
         String message = exceptionMap.get(ex.getClass());
         return buildResponse(HttpStatus.CONFLICT, message);
     }
+    @ExceptionHandler({
+            UserBadCredentialsException.class
+    })
+    public ResponseEntity<Map<String, String>> handleAuthenticationExceptions(RuntimeException ex) {
+        String message = exceptionMap.get(ex.getClass());
+        return buildResponse(HttpStatus.UNAUTHORIZED, message);
+    }
+
+
 }

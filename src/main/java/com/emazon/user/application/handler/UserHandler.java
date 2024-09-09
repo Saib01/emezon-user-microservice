@@ -16,8 +16,8 @@ public class UserHandler implements IUserHandler{
     private final UserRequestMapper userRequestMapper;
     private final IUserServicePort userServicePort;
     @Override
-    public void saveUser(UserRequest userRequest) {
-        userServicePort.saveUser(
+    public void saveAuxUser(UserRequest userRequest) {
+        userServicePort.saveAuxUser(
                 userRequestMapper.toUser(userRequest)
         );
     }

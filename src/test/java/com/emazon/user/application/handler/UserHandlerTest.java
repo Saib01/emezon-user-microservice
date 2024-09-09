@@ -51,7 +51,7 @@ class UserHandlerTest {
 
         ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
 
-        userHandler.saveUser(userRequest);
+        userHandler.saveAuxUser(userRequest);
         verify(userServicePort).saveUser(userCaptor.capture());
         assertEquals(userCaptor.getValue(), user);
     }

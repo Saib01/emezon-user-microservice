@@ -10,6 +10,8 @@ public class DomainConstants {
     public static final String PROPERTY_PASSWORD ="Password";
     public static final String PROPERTY_EMAIL ="Email";
     public static final Long MINIMUM_AGE_REQUIRED=18L;
+    public static final String ROLE_PREFIX ="ROLE_";
+    public static final String AUX_USER_DESCRIPTION="This is an auxiliary user";
 
     private DomainConstants() {
     }

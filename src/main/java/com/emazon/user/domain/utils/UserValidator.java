@@ -14,7 +14,7 @@ import java.util.function.Supplier;
 
 import static com.emazon.user.domain.utils.DomainConstants.*;
 
-public class Validator {
+public class UserValidator {
 
     private static final String[] TYPE_EXCEPTIONS = { "Required","Invalid" };
 
@@ -24,7 +24,7 @@ public class Validator {
     private static final String REGEX_PASSWORD="^(?!.*password)(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&_])[A-Za-z\\d@$!%*?&_]{8,}$";
     private static final String REGEX_NAME_OR_LAST_NAME="^[A-Za-z\\s]{1,50}$";
 
-    private Validator() {
+    private UserValidator() {
     }
 
     private static final Map<String, Supplier<RuntimeException>> EXCEPTION_MAP = new HashMap<>();
@@ -47,7 +47,7 @@ public class Validator {
         EXCEPTION_MAP.put("UserEmailInvalid", UserEmailInvalidException::new);
     }
 
-    public static void validateUserProperties(User user, IRolePersistencePort rolePersistencePort){
+    public static void validateProperties(User user, IRolePersistencePort rolePersistencePort){
         validateNotNullNotEmptyAndMatchesRegex(user.getName(),REGEX_NAME_OR_LAST_NAME,PROPERTY_NAME);
         validateNotNullNotEmptyAndMatchesRegex(user.getLastName(),REGEX_NAME_OR_LAST_NAME,PROPERTY_LAST_NAME);
         validateNotNullNotEmptyAndMatchesRegex(user.getIdDocument(),REGEX_ID_DOCUMENT,PROPERTY_ID_DOCUMENT);
@@ -55,11 +55,10 @@ public class Validator {
         validateNotNullNotEmptyAndMatchesRegex(user.getPassword(),REGEX_PASSWORD,PROPERTY_PASSWORD);
         validateNotNullNotEmptyAndMatchesRegex(user.getEmail(),REGEX_EMAIL,PROPERTY_EMAIL);
         validateUserAge(user.getDateOfBirth());
-        getUserIdRole(user.getRole(),rolePersistencePort);
-
+        getIdRole(user.getRole(),rolePersistencePort);
     }
 
-    private static void getUserIdRole(Role role, IRolePersistencePort rolePersistencePort) {
+    private static void getIdRole(Role role, IRolePersistencePort rolePersistencePort) {
             Role existRole = rolePersistencePort.findByRoleEnum(role.getRoleEnum());
             role.setId(
                     existRole == null ? rolePersistencePort.saveRole(role) : existRole.getId()
@@ -75,11 +74,6 @@ public class Validator {
             throw new UserIdDocumentAlreadyExistException();
         }
     }
-
-    private static void validateNotNullNotEmptyAndMatchesRegex(String text,String regex, String property){
-        validateIsNotNullOrEmpty(text,property);
-        validateUsingRegex(text,regex,property);
-    }
     private static void validateUserAge(LocalDate dateOfBirth){
         if(dateOfBirth==null){
             throw getExceptionForKey(PROPERTY_DATE_OF_BIRTH, TYPE_EXCEPTIONS[0]);
@@ -87,6 +81,10 @@ public class Validator {
         if(Period.between(dateOfBirth,LocalDate.now()).getYears()<MINIMUM_AGE_REQUIRED){
             throw getExceptionForKey(PROPERTY_DATE_OF_BIRTH, TYPE_EXCEPTIONS[1]);
         }
+    }
+    private static void validateNotNullNotEmptyAndMatchesRegex(String text,String regex, String property){
+        validateIsNotNullOrEmpty(text,property);
+        validateUsingRegex(text,regex,property);
     }
     private static void validateUsingRegex(String text,String regex, String property){
         if(!text.matches(regex)){

@@ -5,10 +5,13 @@ import com.emazon.user.domain.model.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring")
+import static com.emazon.user.application.util.ApplicationConstants.*;
+import static org.mapstruct.MappingConstants.ComponentModel.SPRING;
+
+@Mapper(componentModel = SPRING)
 public interface UserRequestMapper {
-    @Mapping(target = "role",source = "roleRequest")
-    @Mapping(target = "role.id",ignore = true)
-    @Mapping(target="id",ignore = true)
+    @Mapping(target = ROLE,source = ROLE_REQUEST)
+    @Mapping(target = ROLE_DOT_ID,ignore = true)
+    @Mapping(target=ID,ignore = true)
     User toUser(UserRequest userRequest);
 }

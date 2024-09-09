@@ -4,4 +4,5 @@ import com.emazon.user.domain.model.User;
 
 public interface IUserServicePort {
     void saveUser(User user);
+    void saveAuxUser(User user);
 }
