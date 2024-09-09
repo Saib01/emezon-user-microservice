@@ -55,11 +55,11 @@ public class Validator {
         validateNotNullNotEmptyAndMatchesRegex(user.getPassword(),REGEX_PASSWORD,PROPERTY_PASSWORD);
         validateNotNullNotEmptyAndMatchesRegex(user.getEmail(),REGEX_EMAIL,PROPERTY_EMAIL);
         validateUserAge(user.getDateOfBirth());
-        validateUserRoll(user.getRole(),rolePersistencePort);
+        getUserIdRole(user.getRole(),rolePersistencePort);
 
     }
 
-    private static void validateUserRoll(Role role, IRolePersistencePort rolePersistencePort) {
+    private static void getUserIdRole(Role role, IRolePersistencePort rolePersistencePort) {
             Role existRole = rolePersistencePort.findByRoleEnum(role.getRoleEnum());
             role.setId(
                     existRole == null ? rolePersistencePort.saveRole(role) : existRole.getId()
@@ -71,7 +71,7 @@ public class Validator {
         }
     }
     public static void validateIdDocumentIsAlreadyInUse(User user, IUserPersistencePort userPersistencePort) {
-        if(userPersistencePort.isIdDocumentInUse(user.getIdDocument())){
+        if(userPersistencePort.isIdDocumentAlreadyInUse(user.getIdDocument())){
             throw new UserIdDocumentAlreadyExistException();
         }
     }

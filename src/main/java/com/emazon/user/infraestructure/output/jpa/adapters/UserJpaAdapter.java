@@ -32,7 +32,7 @@ public class UserJpaAdapter implements IUserPersistencePort {
     }
 
     @Override
-    public boolean isIdDocumentInUse(String idDocument) {
+    public boolean isIdDocumentAlreadyInUse(String idDocument) {
         return !userRepository.findUserEntityByIdDocument(idDocument).isEmpty();
     }
 }

@@ -6,5 +6,5 @@ public interface IUserPersistencePort {
     void saveUser(User user);
     boolean isEmailAlreadyInUse(String email);
     String hashPassword(String plainTextPassword);
-    boolean isIdDocumentInUse(String idDocument);
+    boolean isIdDocumentAlreadyInUse(String idDocument);
 }

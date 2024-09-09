@@ -19,4 +19,18 @@ public class UserBasicRequest {
     private LocalDate dateOfBirth;
     private String password;
     private String email;
+
+    public UserBasicRequest(String name, String lastName, String idDocument, String phoneNumber, LocalDate dateOfBirth, String password, String email) {
+        this.name = name;
+        this.lastName = lastName;
+        this.idDocument = idDocument;
+        this.phoneNumber = phoneNumber;
+        this.dateOfBirth = dateOfBirth;
+        this.password = password;
+        this.email = email;
+    }
+
+    UserBasicRequest() {
+
+    }
 }
