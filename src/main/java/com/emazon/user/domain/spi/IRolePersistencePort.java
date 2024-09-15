@@ -5,5 +5,6 @@ import com.emazon.user.domain.utils.RoleEnum;
 
 public interface IRolePersistencePort {
     Long saveRole(Role role);
+
     Role findByRoleEnum(RoleEnum roleEnum);
 }

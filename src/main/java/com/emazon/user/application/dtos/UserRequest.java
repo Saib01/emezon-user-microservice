@@ -7,7 +7,7 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
-public class UserRequest extends UserBasicRequest{
+public class UserRequest extends UserBasicRequest {
     private RoleRequest roleRequest;
 
     public UserRequest(String name, String lastName, String idDocument, String phoneNumber, LocalDate dateOfBirth, String password, String email) {
@@ -19,6 +19,12 @@ public class UserRequest extends UserBasicRequest{
     }
 
     public static UserRequest from(UserBasicRequest basicRequest, RoleRequest roleRequest) {
+        UserRequest request = UserRequest.from(basicRequest);
+        request.setRoleRequest(roleRequest);
+        return request;
+    }
+
+    public static UserRequest from(UserBasicRequest basicRequest) {
         UserRequest request = new UserRequest();
         request.setName(basicRequest.getName());
         request.setLastName(basicRequest.getLastName());
@@ -27,7 +33,6 @@ public class UserRequest extends UserBasicRequest{
         request.setDateOfBirth(basicRequest.getDateOfBirth());
         request.setPassword(basicRequest.getPassword());
         request.setEmail(basicRequest.getEmail());
-        request.setRoleRequest(roleRequest);
         return request;
     }
 }

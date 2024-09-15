@@ -26,20 +26,21 @@ class RoleEntityMapperTest {
     @Test
     @DisplayName("Should map roleEntity to role correctly")
     void toRole() {
-        Role result= roleEntityMapper.toRole(roleEntity);
-        assertRoleEqual(result,roleEntity);
+        Role result = roleEntityMapper.toRole(roleEntity);
+
+        assertRoleEqual(result, roleEntity);
     }
 
     @Test
     @DisplayName("Should map role to roleEntity correctly")
     void toRoleEntity() {
-        Role role=new Role(VALID_ID, VALID_USER_ROLE, VALID_USER_ROLE_DESCRIPTION);
-        RoleEntity result= roleEntityMapper.toRoleEntity(role);
+        Role role = new Role(VALID_ID, VALID_USER_ROLE, VALID_USER_ROLE_DESCRIPTION);
+        RoleEntity result = roleEntityMapper.toRoleEntity(role);
 
-        assertRoleEqual(role,result);
+        assertRoleEqual(role, result);
     }
 
-    private void assertRoleEqual(Role role, RoleEntity roleEntity){
+    private void assertRoleEqual(Role role, RoleEntity roleEntity) {
         assertThat(role.getId()).isEqualTo(roleEntity.getId());
         assertThat(role.getRoleEnum()).isEqualTo(roleEntity.getRoleEnum());
         assertThat(role.getDescription()).isEqualTo(roleEntity.getDescription());

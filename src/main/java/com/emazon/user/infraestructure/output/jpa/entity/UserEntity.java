@@ -13,8 +13,10 @@ import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 
+import static com.emazon.user.infraestructure.util.InfrastructureEntities.*;
+
 @Entity
-@Table(name="users")
+@Table(name = TABLE_USERS)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,7 +24,7 @@ import java.util.List;
 public class UserEntity implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id_user",nullable = false)
+    @Column(name = ID_USER, nullable = false)
     private Long id;
     @Column(nullable = false)
     private String name;
@@ -36,16 +38,17 @@ public class UserEntity implements UserDetails {
     private LocalDate dateOfBirth;
     @Column(nullable = false)
     private String password;
-    @Column(nullable = false,unique = true)
+    @Column(nullable = false, unique = true)
     private String email;
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(nullable = false, name = "rol_id")
+    @JoinColumn(nullable = false, name = ROLE_ID)
     private RoleEntity roleEntity;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(roleEntity.getRoleEnum().name()));
     }
+
     @Override
     public String getUsername() {
         return getEmail();

@@ -1,9 +1,15 @@
 package com.emazon.user.infraestructure.configuration;
 
+import com.emazon.user.domain.api.IAuthenticationServicePort;
 import com.emazon.user.domain.api.IUserServicePort;
+import com.emazon.user.domain.spi.IAuthenticationPersistencePort;
 import com.emazon.user.domain.spi.IRolePersistencePort;
 import com.emazon.user.domain.spi.IUserPersistencePort;
+import com.emazon.user.domain.usecase.AuthenticationUseCase;
 import com.emazon.user.domain.usecase.UserUseCase;
+import com.emazon.user.infraestructure.configuration.jwt.JwtUtils;
+import com.emazon.user.domain.exeption.ExceptionResponseDomain;
+import com.emazon.user.infraestructure.output.jpa.adapters.AuthenticationJpaAdapter;
 import com.emazon.user.infraestructure.output.jpa.adapters.RoleJpaAdapter;
 import com.emazon.user.infraestructure.output.jpa.adapters.UserJpaAdapter;
 import com.emazon.user.infraestructure.output.jpa.mapper.RoleEntityMapper;
@@ -26,6 +32,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
 
+import static com.emazon.user.domain.utils.DomainConstants.ROLE_PREFIX;
+
 @Configuration
 @RequiredArgsConstructor
 public class BeanConfiguration {
@@ -33,6 +41,7 @@ public class BeanConfiguration {
     private final UserEntityMapper userEntityMapper;
     private final IRoleRepository roleRepository;
     private final RoleEntityMapper roleEntityMapper;
+    private final JwtUtils jwtUtils;
 
     @Bean
     IUserPersistencePort userPersistencePort() {
@@ -50,6 +59,16 @@ public class BeanConfiguration {
     }
 
     @Bean
+    IAuthenticationPersistencePort authenticationPersistencePort() throws Exception {
+        return new AuthenticationJpaAdapter(jwtUtils, authenticationManager(null));
+    }
+
+    @Bean
+    IAuthenticationServicePort authenticationServicePort() throws Exception {
+        return new AuthenticationUseCase(authenticationPersistencePort());
+    }
+
+    @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
@@ -64,23 +83,24 @@ public class BeanConfiguration {
 
     @Bean
     public PasswordEncoder encoder() {
-        return  new BCryptPasswordEncoder();
+        return new BCryptPasswordEncoder();
     }
 
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> userRepository.findUserEntityByEmail(username)
                 .map(userEntity -> new User(
-                        userEntity.getUsername(),
-                        userEntity.getPassword(),
-                        userEntity.isEnabled(),
-                        userEntity.isAccountNonExpired(),
-                        userEntity.isCredentialsNonExpired(),
-                        userEntity.isAccountNonLocked(),
-                        List.of(
-                                new SimpleGrantedAuthority("ROLE_" + userEntity.getRoleEntity().getRoleEnum().name()))
+                                userEntity.getUsername(),
+                                userEntity.getPassword(),
+                                userEntity.isEnabled(),
+                                userEntity.isAccountNonExpired(),
+                                userEntity.isCredentialsNonExpired(),
+                                userEntity.isAccountNonLocked(),
+                                List.of(
+                                        new SimpleGrantedAuthority(ROLE_PREFIX + userEntity.getRoleEntity().getRoleEnum().name()))
                         )
                 )
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+                .orElseThrow(() -> new UsernameNotFoundException(ExceptionResponseDomain.USER_NOT_FOUND.getMessage()));
     }
+
 }
