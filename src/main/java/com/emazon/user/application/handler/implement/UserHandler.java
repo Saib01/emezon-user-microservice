@@ -22,4 +22,11 @@ public class UserHandler implements IUserHandler {
                 userRequestMapper.toUser(userRequest)
         );
     }
+
+    @Override
+    public void saveClientUser(UserRequest userRequest) {
+        userServicePort.saveClientUser(
+                userRequestMapper.toUser(userRequest)
+        );
+    }
 }

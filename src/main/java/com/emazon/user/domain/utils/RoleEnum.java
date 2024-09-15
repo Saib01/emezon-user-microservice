@@ -4,7 +4,8 @@ import java.io.Serializable;
 
 public enum RoleEnum implements Serializable {
     ADMIN,
-    AUX_BODEGA;
+    AUX_BODEGA,
+    CLIENT;
 
     @Override
     public String toString() {

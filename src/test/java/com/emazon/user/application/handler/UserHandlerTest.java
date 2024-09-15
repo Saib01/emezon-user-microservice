@@ -36,7 +36,7 @@ class UserHandlerTest {
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
-        Role role = new Role(VALID_ID, VALID_USER_ROLE, VALID_USER_ROLE_DESCRIPTION);
+        Role role = new Role(VALID_ID, VALID_USER_ROLE_AUX, VALID_USER_ROLE_DESCRIPTION);
         user = new User(VALID_USER_NAME, VALID_USER_LAST_NAME, VALID_USER_ID_DOCUMENT, VALID_USER_PHONE_NUMBER, VALID_USER_DATE_OF_BIRTH, VALID_USER_PASSWORD, VALID_USER_EMAIL);
         user.setId(VALID_ID);
         user.setRole(role);
@@ -44,8 +44,8 @@ class UserHandlerTest {
 
     @Test
     @DisplayName("Should save User correctly")
-    void shouldSaveUser() {
-        RoleRequest roleRequest = new RoleRequest(VALID_USER_ROLE, VALID_USER_ROLE_DESCRIPTION);
+    void shouldSaveAuxUser() {
+        RoleRequest roleRequest = new RoleRequest(VALID_USER_ROLE_AUX, VALID_USER_ROLE_DESCRIPTION);
         UserBasicRequest userBasicRequest = new UserBasicRequest(VALID_USER_NAME, VALID_USER_LAST_NAME, VALID_USER_ID_DOCUMENT, VALID_USER_PHONE_NUMBER, VALID_USER_DATE_OF_BIRTH, VALID_USER_PASSWORD, VALID_USER_EMAIL);
         UserRequest userRequest = UserRequest.from(userBasicRequest, roleRequest);
 

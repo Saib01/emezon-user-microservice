@@ -19,7 +19,7 @@ class RoleEntityMapperTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        roleEntity = new RoleEntity(VALID_ID, VALID_USER_ROLE, VALID_USER_ROLE_DESCRIPTION);
+        roleEntity = new RoleEntity(VALID_ID, VALID_USER_ROLE_AUX, VALID_USER_ROLE_DESCRIPTION);
     }
 
 
@@ -34,7 +34,7 @@ class RoleEntityMapperTest {
     @Test
     @DisplayName("Should map role to roleEntity correctly")
     void toRoleEntity() {
-        Role role = new Role(VALID_ID, VALID_USER_ROLE, VALID_USER_ROLE_DESCRIPTION);
+        Role role = new Role(VALID_ID, VALID_USER_ROLE_AUX, VALID_USER_ROLE_DESCRIPTION);
         RoleEntity result = roleEntityMapper.toRoleEntity(role);
 
         assertRoleEqual(role, result);

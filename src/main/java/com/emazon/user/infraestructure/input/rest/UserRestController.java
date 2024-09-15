@@ -29,9 +29,20 @@ public class UserRestController {
             @ApiResponse(responseCode = RESPONSE_CODE_CONFLICT, description = RESPONSE_DESCRIPTION_USER_ALREADY_EXISTS, content = @Content)
     })
     @PostMapping("/aux")
-    ResponseEntity<Void> saveUser(@RequestBody UserBasicRequest userBasicRequest) {
+    ResponseEntity<Void> saveAuxUser(@RequestBody UserBasicRequest userBasicRequest) {
         UserRequest userRequest = UserRequest.from(userBasicRequest);
         userHandler.saveAuxUser(userRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+    @Operation(summary = ADD_NEW_CLIENT_BODEGA)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = RESPONSE_CODE_CREATED, description = RESPONSE_DESCRIPTION_USER_CREATED, content = @Content),
+            @ApiResponse(responseCode = RESPONSE_CODE_CONFLICT, description = RESPONSE_DESCRIPTION_USER_ALREADY_EXISTS, content = @Content)
+    })
+    @PostMapping("/client")
+    ResponseEntity<Void> saveClientUser(@RequestBody UserBasicRequest userBasicRequest) {
+        UserRequest userRequest = UserRequest.from(userBasicRequest);
+        userHandler.saveClientUser(userRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }
