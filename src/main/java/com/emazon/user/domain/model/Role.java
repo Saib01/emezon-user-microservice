@@ -7,10 +7,10 @@ public class Role {
     private RoleEnum roleEnum;
     private String description;
 
-    public Role(Long id, RoleEnum roleEnum,String description) {
+    public Role(Long id, RoleEnum roleEnum, String description) {
         this.id = id;
         this.roleEnum = roleEnum;
-        this.description=description;
+        this.description = description;
     }
 
     public String getDescription() {

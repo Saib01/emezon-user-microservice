@@ -13,17 +13,18 @@ public class UserJpaAdapter implements IUserPersistencePort {
     private final IUserRepository userRepository;
     private final UserEntityMapper userEntityMapper;
     private final PasswordEncoder passwordEncoder;
+
     @Override
     public void saveUser(User user) {
         this.userRepository.save(
                 this.userEntityMapper.toUserEntity(user)
         );
     }
+
     @Override
-    public boolean isEmailAlreadyInUse(String email){
+    public boolean isEmailAlreadyInUse(String email) {
         return !userRepository.findUserEntityByEmail(email).isEmpty();
     }
-
 
 
     @Override

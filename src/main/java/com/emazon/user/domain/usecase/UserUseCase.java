@@ -16,24 +16,24 @@ public class UserUseCase implements IUserServicePort {
     private final IRolePersistencePort rolePersistencePort;
     private final IUserPersistencePort userPersistencePort;
 
-    public UserUseCase(IUserPersistencePort userPersistencePort,IRolePersistencePort rolePersistencePort) {
+    public UserUseCase(IUserPersistencePort userPersistencePort, IRolePersistencePort rolePersistencePort) {
         this.userPersistencePort = userPersistencePort;
-        this.rolePersistencePort=rolePersistencePort;
+        this.rolePersistencePort = rolePersistencePort;
     }
 
 
     @Override
     public void saveUser(User user) {
-        UserValidator.validateProperties(user,rolePersistencePort);
-        UserValidator.validateIdDocumentIsAlreadyInUse(user,userPersistencePort);
-        UserValidator.validateEmailIsAlreadyInUse(user,userPersistencePort);
+        UserValidator.validateProperties(user, rolePersistencePort);
+        UserValidator.validateIdDocumentIsAlreadyInUse(user, userPersistencePort);
+        UserValidator.validateEmailIsAlreadyInUse(user, userPersistencePort);
         user.setPassword(this.userPersistencePort.hashPassword(user.getPassword()));
         this.userPersistencePort.saveUser(user);
     }
 
     @Override
     public void saveAuxUser(User user) {
-        user.setRole(new Role(null,RoleEnum.AUX_BODEGA,AUX_USER_DESCRIPTION));
+        user.setRole(new Role(null, RoleEnum.AUX_BODEGA, AUX_USER_DESCRIPTION));
         this.saveUser(user);
     }
 }

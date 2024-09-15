@@ -1,7 +1,9 @@
 package com.emazon.user.infraestructure.configuration;
+
 import com.emazon.user.domain.utils.RoleEnum;
 import com.emazon.user.infraestructure.configuration.jwt.JwtAuthenticationFilter;
 import com.emazon.user.infraestructure.configuration.jwt.JwtUtils;
+import com.emazon.user.infraestructure.exceptionhandler.CustomAccessDeniedHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,8 +27,8 @@ import static com.emazon.user.infraestructure.util.InfraestructureRestController
 @RequiredArgsConstructor
 public class SecurityConfig {
     private final AuthenticationProvider authenticationProvider;
-
     private final JwtUtils jwtUtils;
+    private final CustomAccessDeniedHandler customAccessDeniedHandler;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
@@ -34,15 +36,17 @@ public class SecurityConfig {
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .httpBasic(Customizer.withDefaults())
-                .sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(http->{
-                    http.requestMatchers(HttpMethod.POST,API_SIGNUP_PATH).hasRole(RoleEnum.ADMIN.name());
-                    http.requestMatchers(HttpMethod.POST,API_AUTH_PATH).permitAll();
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(http -> {
+                    http.requestMatchers(HttpMethod.POST, API_SIGNUP_PATH).hasRole(RoleEnum.ADMIN.name());
+                    http.requestMatchers(HttpMethod.POST, API_AUTH_PATH).permitAll();
+                    http.anyRequest().permitAll();
                 })
                 .addFilterBefore(new JwtAuthenticationFilter(jwtUtils), BasicAuthenticationFilter.class)
                 .authenticationProvider(authenticationProvider)
+                .exceptionHandling(exceptionHandling ->exceptionHandling
+                        .accessDeniedHandler(customAccessDeniedHandler))
                 .build();
-
     }
 
 }

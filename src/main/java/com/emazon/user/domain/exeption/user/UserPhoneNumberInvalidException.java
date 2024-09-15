@@ -1,7 +1,7 @@
 package com.emazon.user.domain.exeption.user;
 
-public class UserPhoneNumberInvalidException extends RuntimeException{
-    public UserPhoneNumberInvalidException() {
-        super();
+public class UserPhoneNumberInvalidException extends RuntimeException {
+    public UserPhoneNumberInvalidException(String message) {
+        super(message);
     }
 }

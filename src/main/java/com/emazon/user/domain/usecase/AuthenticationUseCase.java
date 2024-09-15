@@ -4,6 +4,8 @@ import com.emazon.user.domain.api.IAuthenticationServicePort;
 import com.emazon.user.domain.exeption.user.UserBadCredentialsException;
 import com.emazon.user.domain.spi.IAuthenticationPersistencePort;
 
+import static com.emazon.user.domain.exeption.ExceptionResponseDomain.USER_PASSWORD_INCORRECT;
+
 public class AuthenticationUseCase implements IAuthenticationServicePort {
     private final IAuthenticationPersistencePort authenticationPersistencePort;
 
@@ -16,7 +18,7 @@ public class AuthenticationUseCase implements IAuthenticationServicePort {
         try {
             return this.authenticationPersistencePort.generateToken(username, authenticationPersistencePort.getRole(username, password));
         } catch (RuntimeException e) {
-            throw new UserBadCredentialsException();
+            throw new UserBadCredentialsException(USER_PASSWORD_INCORRECT.getMessage());
         }
     }
 }

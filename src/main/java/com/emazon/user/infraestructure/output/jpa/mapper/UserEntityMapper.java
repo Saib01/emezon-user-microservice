@@ -9,10 +9,11 @@ import static com.emazon.user.application.util.ApplicationConstants.ROLE;
 import static com.emazon.user.infraestructure.util.InfrastructureEntities.ROLE_ENTITY;
 import static org.mapstruct.MappingConstants.ComponentModel.SPRING;
 
-@Mapper(componentModel = SPRING,uses = {RoleEntityMapper.class})
+@Mapper(componentModel = SPRING, uses = {RoleEntityMapper.class})
 public interface UserEntityMapper {
-    @Mapping(source = ROLE,target = ROLE_ENTITY)
+    @Mapping(source = ROLE, target = ROLE_ENTITY)
     UserEntity toUserEntity(User user);
-    @Mapping(target =ROLE,source = ROLE_ENTITY)
+
+    @Mapping(target = ROLE, source = ROLE_ENTITY)
     User toUser(UserEntity userEntity);
 }

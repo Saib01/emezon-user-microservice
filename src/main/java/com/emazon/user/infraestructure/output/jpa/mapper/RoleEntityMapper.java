@@ -11,5 +11,6 @@ import static org.mapstruct.MappingConstants.ComponentModel.SPRING;
 public interface RoleEntityMapper {
 
     RoleEntity toRoleEntity(Role role);
+
     Role toRole(RoleEntity roleEntity);
 }

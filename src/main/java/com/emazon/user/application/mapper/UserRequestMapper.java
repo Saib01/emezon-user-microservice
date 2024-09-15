@@ -10,8 +10,8 @@ import static org.mapstruct.MappingConstants.ComponentModel.SPRING;
 
 @Mapper(componentModel = SPRING)
 public interface UserRequestMapper {
-    @Mapping(target = ROLE,source = ROLE_REQUEST)
-    @Mapping(target = ROLE_DOT_ID,ignore = true)
-    @Mapping(target=ID,ignore = true)
+    @Mapping(target = ROLE, source = ROLE_REQUEST)
+    @Mapping(target = ROLE_DOT_ID, ignore = true)
+    @Mapping(target = ID, ignore = true)
     User toUser(UserRequest userRequest);
 }

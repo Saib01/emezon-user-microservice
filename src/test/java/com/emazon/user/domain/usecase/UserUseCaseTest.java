@@ -14,13 +14,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-
 import static com.emazon.user.utils.TestConstants.*;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.*;
 
 class UserUseCaseTest {
 
@@ -61,7 +57,25 @@ class UserUseCaseTest {
         assertEquals(userCaptor.getValue(), user);
 
     }
+    @Test
+    @DisplayName("Should save the user and verify that the persistence port method is called once")
+    void saveAuxUser() {
+        when(this.rolePersistencePort.findByRoleEnum(role.getRoleEnum())).thenReturn(null);
+        when(this.userPersistencePort.isIdDocumentAlreadyInUse(user.getIdDocument())).thenReturn(false);
+        when(this.userPersistencePort.isEmailAlreadyInUse(user.getEmail())).thenReturn(false);
 
+        userUseCase.saveAuxUser(user);
+
+        ArgumentCaptor<Role> roleCaptor = ArgumentCaptor.forClass(Role.class);
+        ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
+
+
+        verify(rolePersistencePort, times(1)).saveRole(roleCaptor.capture());
+
+        verify(userPersistencePort, times(1)).saveUser(userCaptor.capture());
+        assertEquals(userCaptor.getValue(), user);
+
+    }
     @Test
     @DisplayName("Should not save user when name is empty or null")
     void shouldNotSaveUserWhenNameIsEmptyOrNull() {
@@ -140,9 +154,12 @@ class UserUseCaseTest {
         when(this.rolePersistencePort.findByRoleEnum(role.getRoleEnum())).thenReturn(role);
         when(this.userPersistencePort.isIdDocumentAlreadyInUse(user.getIdDocument())).thenReturn(false);
         when(this.userPersistencePort.isEmailAlreadyInUse(user.getEmail())).thenReturn(false);
+
         user.setDateOfBirth(null);
+
         assertThrows(UserDateOfBirthRequiredException.class, () -> userUseCase.saveUser(user));
     }
+
     @Test
     @DisplayName("Name validation should fail when the name doesn't match the regex pattern.")
     void shouldNotMatchInvalidNamePattern() {
@@ -200,6 +217,7 @@ class UserUseCaseTest {
         when(this.rolePersistencePort.findByRoleEnum(role.getRoleEnum())).thenReturn(role);
         when(this.userPersistencePort.isIdDocumentAlreadyInUse(user.getIdDocument())).thenReturn(false);
         when(this.userPersistencePort.isEmailAlreadyInUse(user.getEmail())).thenReturn(true);
+
         assertThrows(UserEmailAlreadyExistException.class, () -> userUseCase.saveUser(user));
     }
 
@@ -209,7 +227,9 @@ class UserUseCaseTest {
         when(this.rolePersistencePort.findByRoleEnum(role.getRoleEnum())).thenReturn(role);
         when(this.userPersistencePort.isIdDocumentAlreadyInUse(user.getIdDocument())).thenReturn(false);
         when(this.userPersistencePort.isEmailAlreadyInUse(user.getEmail())).thenReturn(false);
+
         user.setDateOfBirth(INVALID_USER_DATE_OF_BIRTH);
+
         assertThrows(UserDateOfBirthInvalidException.class, () -> userUseCase.saveUser(user));
     }
 }

@@ -16,7 +16,7 @@ import java.util.List;
 import static com.emazon.user.infraestructure.util.InfrastructureEntities.*;
 
 @Entity
-@Table(name=TABLE_USERS)
+@Table(name = TABLE_USERS)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -24,7 +24,7 @@ import static com.emazon.user.infraestructure.util.InfrastructureEntities.*;
 public class UserEntity implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name=ID_USER,nullable = false)
+    @Column(name = ID_USER, nullable = false)
     private Long id;
     @Column(nullable = false)
     private String name;
@@ -38,7 +38,7 @@ public class UserEntity implements UserDetails {
     private LocalDate dateOfBirth;
     @Column(nullable = false)
     private String password;
-    @Column(nullable = false,unique = true)
+    @Column(nullable = false, unique = true)
     private String email;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(nullable = false, name = ROLE_ID)
@@ -48,6 +48,7 @@ public class UserEntity implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(roleEntity.getRoleEnum().name()));
     }
+
     @Override
     public String getUsername() {
         return getEmail();

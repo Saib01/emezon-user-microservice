@@ -10,7 +10,7 @@ import static com.emazon.user.infraestructure.util.InfrastructureEntities.TABLE_
 
 
 @Entity
-@Table(name=TABLE_ROLES)
+@Table(name = TABLE_ROLES)
 @Setter
 @Getter
 @AllArgsConstructor
@@ -19,7 +19,7 @@ import static com.emazon.user.infraestructure.util.InfrastructureEntities.TABLE_
 public class RoleEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name=ID_ROLE,nullable = false)
+    @Column(name = ID_ROLE, nullable = false)
     private Long id;
     @Column(nullable = false, unique = true)
     @Enumerated(EnumType.STRING)

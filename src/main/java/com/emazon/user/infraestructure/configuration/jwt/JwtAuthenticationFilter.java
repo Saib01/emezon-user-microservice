@@ -1,5 +1,6 @@
 package com.emazon.user.infraestructure.configuration.jwt;
 
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -18,37 +19,44 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.Collection;
 
-import static com.emazon.user.infraestructure.util.InfrastructureConstants.AUTHORITIES;
-import static com.emazon.user.infraestructure.util.InfrastructureConstants.BEARER;
+import static com.emazon.user.domain.exeption.ExceptionResponseDomain.JWT_INVALID;
+import static com.emazon.user.infraestructure.util.InfraestructureRestControllerConstants.APPLICATION_JSON;
+import static com.emazon.user.infraestructure.util.InfrastructureConstants.*;
+import static java.lang.String.format;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtUtils jwtUtils;
-
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request,
                                     @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
         String authHeader = request.getHeader(AUTHORIZATION);
-        if (authHeader == null || !authHeader.startsWith(BEARER)) {
+        if (authHeader == null || !authHeader.startsWith(BEARER_PREFIX)) {
             filterChain.doFilter(request, response);
             return;
         }
-        String jwtToken = authHeader.substring(7);
+        String jwtToken = authHeader.substring(BEARER_PREFIX.length());
+        try {
+            DecodedJWT decodedJWT = jwtUtils.validateToken(jwtToken);
 
-        DecodedJWT decodedJWT = jwtUtils.validateToken(jwtToken);
+            String username = jwtUtils.extractUsername(decodedJWT);
+            String stringAuthorities = jwtUtils.getSpecificClaim(decodedJWT, AUTHORITIES).asString();
 
-        String username = jwtUtils.extractUsername(decodedJWT);
-        String stringAuthorities = jwtUtils.getSpecificClaim(decodedJWT, AUTHORITIES).asString();
+            Collection<? extends GrantedAuthority> authorities = AuthorityUtils.commaSeparatedStringToAuthorityList(stringAuthorities);
 
-        Collection<? extends GrantedAuthority> authorities = AuthorityUtils.commaSeparatedStringToAuthorityList(stringAuthorities);
-
-        SecurityContext context = SecurityContextHolder.getContext();
-        Authentication authentication = new UsernamePasswordAuthenticationToken(username, null, authorities);
-        context.setAuthentication(authentication);
-        SecurityContextHolder.setContext(context);
+            SecurityContext context = SecurityContextHolder.getContext();
+            Authentication authentication = new UsernamePasswordAuthenticationToken(username, null, authorities);
+            context.setAuthentication(authentication);
+            SecurityContextHolder.setContext(context);
+        } catch (JWTVerificationException e) {
+            response.setContentType(APPLICATION_JSON);
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write(format(TEMPLATE_RESPONSE_ERROR,JWT_INVALID.getMessage()));
+            return;
+        }
 
         filterChain.doFilter(request, response);
     }

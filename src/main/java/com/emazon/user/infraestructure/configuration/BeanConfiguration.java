@@ -8,7 +8,7 @@ import com.emazon.user.domain.spi.IUserPersistencePort;
 import com.emazon.user.domain.usecase.AuthenticationUseCase;
 import com.emazon.user.domain.usecase.UserUseCase;
 import com.emazon.user.infraestructure.configuration.jwt.JwtUtils;
-import com.emazon.user.infraestructure.exceptionhandler.ExceptionResponse;
+import com.emazon.user.domain.exeption.ExceptionResponseDomain;
 import com.emazon.user.infraestructure.output.jpa.adapters.AuthenticationJpaAdapter;
 import com.emazon.user.infraestructure.output.jpa.adapters.RoleJpaAdapter;
 import com.emazon.user.infraestructure.output.jpa.adapters.UserJpaAdapter;
@@ -60,7 +60,7 @@ public class BeanConfiguration {
 
     @Bean
     IAuthenticationPersistencePort authenticationPersistencePort() throws Exception {
-        return new AuthenticationJpaAdapter(jwtUtils,authenticationManager(null));
+        return new AuthenticationJpaAdapter(jwtUtils, authenticationManager(null));
     }
 
     @Bean
@@ -83,24 +83,24 @@ public class BeanConfiguration {
 
     @Bean
     public PasswordEncoder encoder() {
-        return  new BCryptPasswordEncoder();
+        return new BCryptPasswordEncoder();
     }
 
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> userRepository.findUserEntityByEmail(username)
                 .map(userEntity -> new User(
-                        userEntity.getUsername(),
-                        userEntity.getPassword(),
-                        userEntity.isEnabled(),
-                        userEntity.isAccountNonExpired(),
-                        userEntity.isCredentialsNonExpired(),
-                        userEntity.isAccountNonLocked(),
-                        List.of(
-                                new SimpleGrantedAuthority(ROLE_PREFIX + userEntity.getRoleEntity().getRoleEnum().name()))
+                                userEntity.getUsername(),
+                                userEntity.getPassword(),
+                                userEntity.isEnabled(),
+                                userEntity.isAccountNonExpired(),
+                                userEntity.isCredentialsNonExpired(),
+                                userEntity.isAccountNonLocked(),
+                                List.of(
+                                        new SimpleGrantedAuthority(ROLE_PREFIX + userEntity.getRoleEntity().getRoleEnum().name()))
                         )
                 )
-                .orElseThrow(() -> new UsernameNotFoundException(ExceptionResponse.USER_NOT_FOUND.getMessage()));
+                .orElseThrow(() -> new UsernameNotFoundException(ExceptionResponseDomain.USER_NOT_FOUND.getMessage()));
     }
 
 }

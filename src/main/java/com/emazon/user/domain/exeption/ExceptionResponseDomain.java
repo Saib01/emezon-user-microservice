@@ -1,10 +1,10 @@
-package com.emazon.user.infraestructure.exceptionhandler;
+package com.emazon.user.domain.exeption;
 
-import static com.emazon.user.domain.utils.ErrorTemplates.*;
 import static com.emazon.user.domain.utils.DomainConstants.*;
+import static com.emazon.user.domain.utils.ErrorTemplates.*;
 import static java.lang.String.format;
 
-public enum ExceptionResponse {
+public enum ExceptionResponseDomain {
 
     USER_NAME_REQUIRED(format(REQUIRED, MODEL_USER, PROPERTY_NAME)),
     USER_PHONE_NUMBER_REQUIRED(format(REQUIRED, MODEL_USER, PROPERTY_PHONE_NUMBER)),
@@ -27,7 +27,7 @@ public enum ExceptionResponse {
     JWT_INVALID("Token Invalid, not Authorized");
     private final String message;
 
-    ExceptionResponse(String message) {
+    ExceptionResponseDomain(String message) {
         this.message = message;
     }
 

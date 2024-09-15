@@ -12,21 +12,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static com.emazon.user.utils.TestConstants.*;
-import static com.emazon.user.utils.TestConstants.VALID_USER_ROLE_DESCRIPTION;
 import static org.assertj.core.api.Assertions.assertThat;
+
 @SpringBootTest
 class UserEntityMapperTest {
-    @Autowired
-    private RoleEntityMapper roleEntityMapper ;
-    @Autowired
-    private UserEntityMapper userEntityMapper ;
     UserEntity userEntity;
+    @Autowired
+    private RoleEntityMapper roleEntityMapper;
+    @Autowired
+    private UserEntityMapper userEntityMapper;
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
         RoleEntity roleEntity = new RoleEntity(VALID_ID, VALID_USER_ROLE, VALID_USER_ROLE_DESCRIPTION);
-        userEntity = new UserEntity(VALID_ID,VALID_USER_NAME,VALID_USER_LAST_NAME,VALID_USER_ID_DOCUMENT,
-                VALID_USER_PHONE_NUMBER,VALID_USER_DATE_OF_BIRTH,VALID_USER_PASSWORD,VALID_USER_EMAIL,
+        userEntity = new UserEntity(VALID_ID, VALID_USER_NAME, VALID_USER_LAST_NAME, VALID_USER_ID_DOCUMENT,
+                VALID_USER_PHONE_NUMBER, VALID_USER_DATE_OF_BIRTH, VALID_USER_PASSWORD, VALID_USER_EMAIL,
                 roleEntity
         );
     }
@@ -35,20 +36,24 @@ class UserEntityMapperTest {
     @Test
     @DisplayName("Should map userEntity to user correctly")
     void toUser() {
-        User result= userEntityMapper.toUser(userEntity);
-        assertUserEqual(result,userEntity);
+        User result = userEntityMapper.toUser(userEntity);
+
+        assertUserEqual(result, userEntity);
     }
+
     @Test
     @DisplayName("Should map user to userEntity correctly")
     void toUserEntity() {
-        User user=new User(VALID_USER_NAME,VALID_USER_LAST_NAME,VALID_USER_ID_DOCUMENT,
-                VALID_USER_PHONE_NUMBER,VALID_USER_DATE_OF_BIRTH,VALID_USER_PASSWORD,VALID_USER_EMAIL);
+        User user = new User(VALID_USER_NAME, VALID_USER_LAST_NAME, VALID_USER_ID_DOCUMENT,
+                VALID_USER_PHONE_NUMBER, VALID_USER_DATE_OF_BIRTH, VALID_USER_PASSWORD, VALID_USER_EMAIL);
         user.setId(VALID_ID);
-        user.setRole(new Role(VALID_ID,VALID_USER_ROLE,VALID_USER_ROLE_DESCRIPTION));
-        UserEntity result= userEntityMapper.toUserEntity(user);
-        assertUserEqual(user,result);
+        user.setRole(new Role(VALID_ID, VALID_USER_ROLE, VALID_USER_ROLE_DESCRIPTION));
+        UserEntity result = userEntityMapper.toUserEntity(user);
+
+        assertUserEqual(user, result);
     }
-    private void assertUserEqual(User user, UserEntity userEntity){
+
+    private void assertUserEqual(User user, UserEntity userEntity) {
         assertThat(user.getId()).isEqualTo(userEntity.getId());
         assertThat(user.getName()).isEqualTo(userEntity.getName());
         assertThat(user.getLastName()).isEqualTo(userEntity.getLastName());
