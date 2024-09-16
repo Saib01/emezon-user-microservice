@@ -20,10 +20,10 @@ import java.io.IOException;
 import java.util.Collection;
 
 import static com.emazon.user.domain.exeption.ExceptionResponseDomain.JWT_INVALID;
-import static com.emazon.user.infraestructure.util.InfraestructureRestControllerConstants.APPLICATION_JSON;
 import static com.emazon.user.infraestructure.util.InfrastructureConstants.*;
 import static java.lang.String.format;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -52,7 +52,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             context.setAuthentication(authentication);
             SecurityContextHolder.setContext(context);
         } catch (JWTVerificationException e) {
-            response.setContentType(APPLICATION_JSON);
+            response.setContentType(APPLICATION_JSON_VALUE);
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().write(format(TEMPLATE_RESPONSE_ERROR,JWT_INVALID.getMessage()));
             return;

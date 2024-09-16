@@ -12,8 +12,6 @@ public class InfraestructureRestControllerConstants {
     public static final String ADD_NEW_AUX_BODEGA = "Add a new aux bodega";
     public static final String ADD_NEW_CLIENT_BODEGA = "Add a new client";
     public static final String USER_LOGIN = "User login";
-
-    public static final String APPLICATION_JSON ="application/json";
     public static final String API_BASE = "/api";
     public static final String USERS = "/users";
     public static final String AUX = "/aux";
@@ -21,6 +19,7 @@ public class InfraestructureRestControllerConstants {
     public static final String AUTH = "/auth";
 
     public static final String API_SIGNUP_AUX_PATH = String.format("%s%s%s", API_BASE, USERS, AUX);
+    public static final String API_SIGNUP_CLIENT_PATH = String.format("%s%s%s", API_BASE, USERS, CLIENT);
     public static final String API_AUTH_PATH = String.format("%s%s", API_BASE, AUTH);
 
     private InfraestructureRestControllerConstants() {

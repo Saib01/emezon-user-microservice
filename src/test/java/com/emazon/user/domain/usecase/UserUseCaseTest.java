@@ -27,23 +27,20 @@ class UserUseCaseTest {
     @InjectMocks
     private UserUseCase userUseCase;
     private User user;
-    private Role role;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        role = new Role(VALID_ID, VALID_USER_ROLE_AUX, VALID_USER_ROLE_DESCRIPTION);
         user = new User(VALID_USER_NAME, VALID_USER_LAST_NAME, VALID_USER_ID_DOCUMENT, VALID_USER_PHONE_NUMBER, VALID_USER_DATE_OF_BIRTH, VALID_USER_PASSWORD, VALID_USER_EMAIL);
         user.setId(VALID_ID);
-        user.setRole(role);
     }
 
     @Test
     @DisplayName("Should save the user and verify that the persistence port method is called once")
     void saveUser() {
-        when(this.rolePersistencePort.findByRoleEnum( VALID_USER_ROLE_AUX)).thenReturn(null);
         when(this.userPersistencePort.isIdDocumentAlreadyInUse(user.getIdDocument())).thenReturn(false);
         when(this.userPersistencePort.isEmailAlreadyInUse(user.getEmail())).thenReturn(false);
+        when(this.rolePersistencePort.findByRoleEnum( VALID_USER_ROLE_AUX)).thenReturn(null);
 
         userUseCase.saveUser(user, VALID_USER_ROLE_AUX, VALID_USER_ROLE_DESCRIPTION);
 
@@ -58,11 +55,11 @@ class UserUseCaseTest {
 
     }
     @Test
-    @DisplayName("Should save the user and verify that the persistence port method is called once")
+    @DisplayName("Should save an aux user and verify that the persistence port method is called once")
     void saveAuxUser() {
-        when(this.rolePersistencePort.findByRoleEnum( VALID_USER_ROLE_AUX)).thenReturn(null);
         when(this.userPersistencePort.isIdDocumentAlreadyInUse(user.getIdDocument())).thenReturn(false);
         when(this.userPersistencePort.isEmailAlreadyInUse(user.getEmail())).thenReturn(false);
+        when(this.rolePersistencePort.findByRoleEnum( VALID_USER_ROLE_AUX)).thenReturn(null);
 
         userUseCase.saveAuxUser(user);
 
@@ -76,6 +73,26 @@ class UserUseCaseTest {
         assertEquals(userCaptor.getValue(), user);
 
     }
+    @Test
+    @DisplayName("Should save a client user and verify that the persistence port method is called once")
+    void saveClientUser() {
+        when(this.userPersistencePort.isIdDocumentAlreadyInUse(user.getIdDocument())).thenReturn(false);
+        when(this.userPersistencePort.isEmailAlreadyInUse(user.getEmail())).thenReturn(false);
+        when(this.rolePersistencePort.findByRoleEnum( VALID_USER_ROLE_CLIENT)).thenReturn(null);
+
+        userUseCase.saveClientUser(user);
+
+        ArgumentCaptor<Role> roleCaptor = ArgumentCaptor.forClass(Role.class);
+        ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
+
+
+        verify(rolePersistencePort, times(1)).saveRole(roleCaptor.capture());
+
+        verify(userPersistencePort, times(1)).saveUser(userCaptor.capture());
+        assertEquals(userCaptor.getValue(), user);
+
+    }
+
     @Test
     @DisplayName("Should not save user when name is empty or null")
     void shouldNotSaveUserWhenNameIsEmptyOrNull() {
@@ -151,10 +168,6 @@ class UserUseCaseTest {
     @Test
     @DisplayName("Should not save user when email is empty or null")
     void shouldNotSaveUserWhenDateOfBirthIsEmptyOrNull() {
-        when(this.rolePersistencePort.findByRoleEnum(role.getRoleEnum())).thenReturn(role);
-        when(this.userPersistencePort.isIdDocumentAlreadyInUse(user.getIdDocument())).thenReturn(false);
-        when(this.userPersistencePort.isEmailAlreadyInUse(user.getEmail())).thenReturn(false);
-
         user.setDateOfBirth(null);
 
         assertThrows(UserDateOfBirthRequiredException.class, () -> userUseCase.saveUser(user,VALID_USER_ROLE_AUX, VALID_USER_ROLE_DESCRIPTION));
@@ -206,7 +219,6 @@ class UserUseCaseTest {
     @Test
     @DisplayName("Should not save user when Id Document is already in use")
     void shouldNotSaveUserWhenIdDocumentIsAlreadyInUse() {
-        when(this.rolePersistencePort.findByRoleEnum(role.getRoleEnum())).thenReturn(role);
         when(this.userPersistencePort.isIdDocumentAlreadyInUse(user.getIdDocument())).thenReturn(true);
         assertThrows(UserIdDocumentAlreadyExistException.class, () -> userUseCase.saveUser(user,VALID_USER_ROLE_AUX, VALID_USER_ROLE_DESCRIPTION));
     }
@@ -214,7 +226,6 @@ class UserUseCaseTest {
     @Test
     @DisplayName("Should not save user when email is already in use")
     void shouldNotSaveUserWhenEmailIsAlreadyInUse() {
-        when(this.rolePersistencePort.findByRoleEnum(role.getRoleEnum())).thenReturn(role);
         when(this.userPersistencePort.isIdDocumentAlreadyInUse(user.getIdDocument())).thenReturn(false);
         when(this.userPersistencePort.isEmailAlreadyInUse(user.getEmail())).thenReturn(true);
 
@@ -224,7 +235,6 @@ class UserUseCaseTest {
     @Test
     @DisplayName("Should not save user when date of birth is invalid")
     void shouldNotSaveUserWhenDateOfBirthIsInvalid() {
-        when(this.rolePersistencePort.findByRoleEnum(role.getRoleEnum())).thenReturn(role);
         when(this.userPersistencePort.isIdDocumentAlreadyInUse(user.getIdDocument())).thenReturn(false);
         when(this.userPersistencePort.isEmailAlreadyInUse(user.getEmail())).thenReturn(false);
 

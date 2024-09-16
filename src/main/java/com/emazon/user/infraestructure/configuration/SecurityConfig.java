@@ -38,8 +38,8 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(http -> {
                     http.requestMatchers(HttpMethod.POST, API_SIGNUP_AUX_PATH).hasRole(RoleEnum.ADMIN.name());
-                    http.requestMatchers(HttpMethod.POST, API_AUTH_PATH).permitAll();
-                    http.anyRequest().permitAll();
+                    http.requestMatchers(HttpMethod.POST,API_SIGNUP_CLIENT_PATH,API_AUTH_PATH).permitAll();
+                    http.anyRequest().authenticated();
                 })
                 .addFilterBefore(new JwtAuthenticationFilter(jwtUtils), BasicAuthenticationFilter.class)
                 .authenticationProvider(authenticationProvider)
