@@ -2,7 +2,6 @@ package com.emazon.user;
 
 import com.emazon.user.domain.usecase.UserUseCase;
 import com.emazon.user.domain.utils.RoleEnum;
-import com.emazon.user.infraestructure.output.jpa.entity.RoleEntity;
 import com.emazon.user.infraestructure.output.jpa.entity.UserEntity;
 import com.emazon.user.infraestructure.output.jpa.mapper.UserEntityMapper;
 import org.springframework.boot.CommandLineRunner;
@@ -27,7 +26,6 @@ public class UserApplication {
                     .name("Johan")
                     .lastName("Santiago")
                     .email("mail@mail.com")
-                    .roleEntity(new RoleEntity(null, RoleEnum.ADMIN, "Dios del Sistema"))
                     .phoneNumber("+573116322584")
                     .dateOfBirth(LocalDate.parse("1990-08-11"))
                     .idDocument("123123123123")
@@ -35,7 +33,7 @@ public class UserApplication {
                     .build();
 
             userUseCase.saveUser(
-                    userEntityMapper.toUser(admin)
+                    userEntityMapper.toUser(admin),RoleEnum.ADMIN, "Dios del Sistema"
             );
         };
 

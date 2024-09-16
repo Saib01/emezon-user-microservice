@@ -49,7 +49,7 @@ public class UserValidator {
     private UserValidator() {
     }
 
-    public static void validateProperties(User user, IRolePersistencePort rolePersistencePort) {
+    public static void validateProperties(User user) {
         validateNotNullNotEmptyAndMatchesRegex(user.getName(), REGEX_NAME_OR_LAST_NAME, PROPERTY_NAME);
         validateNotNullNotEmptyAndMatchesRegex(user.getLastName(), REGEX_NAME_OR_LAST_NAME, PROPERTY_LAST_NAME);
         validateNotNullNotEmptyAndMatchesRegex(user.getIdDocument(), REGEX_ID_DOCUMENT, PROPERTY_ID_DOCUMENT);
@@ -57,14 +57,15 @@ public class UserValidator {
         validateNotNullNotEmptyAndMatchesRegex(user.getPassword(), REGEX_PASSWORD, PROPERTY_PASSWORD);
         validateNotNullNotEmptyAndMatchesRegex(user.getEmail(), REGEX_EMAIL, PROPERTY_EMAIL);
         validateUserAge(user.getDateOfBirth());
-        getIdRole(user.getRole(), rolePersistencePort);
     }
 
-    private static void getIdRole(Role role, IRolePersistencePort rolePersistencePort) {
-        Role existRole = rolePersistencePort.findByRoleEnum(role.getRoleEnum());
-        role.setId(
-                existRole == null ? rolePersistencePort.saveRole(role) : existRole.getId()
-        );
+    public static Role getRole(RoleEnum roleEnum, String roleDescription, IRolePersistencePort rolePersistencePort) {
+        Role existRole = rolePersistencePort.findByRoleEnum(roleEnum);
+        if(existRole==null){
+            existRole=new Role(null,roleEnum,roleDescription);
+            existRole.setId(rolePersistencePort.saveRole(existRole));
+        }
+        return existRole;
     }
 
     public static void validateEmailIsAlreadyInUse(User user, IUserPersistencePort userPersistencePort) {

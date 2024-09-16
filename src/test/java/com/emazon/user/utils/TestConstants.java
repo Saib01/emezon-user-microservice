@@ -10,10 +10,11 @@ public class TestConstants {
     public static final String VALID_USER_NAME = "Johan";
     public static final String VALID_USER_LAST_NAME = "Santiago";
     public static final String VALID_USER_EMAIL = "mail@mail.com";
-    public static final RoleEnum VALID_USER_ROLE = RoleEnum.ADMIN;
+    public static final RoleEnum VALID_USER_ROLE_AUX = RoleEnum.AUX_BODEGA;
+    public static final RoleEnum VALID_USER_ROLE_CLIENT = RoleEnum.CLIENT;
     public static final String VALID_USER_FOR_TOKEN = "ROLE_AUX_BODEGA";
     public static final String VALID_JWT_TOKEN = "mockedJwtToken";
-    public static final String VALID_USER_ROLE_DESCRIPTION = "Dios del Sistema";
+    public static final String VALID_USER_ROLE_DESCRIPTION = "Description";
     public static final String VALID_USER_PHONE_NUMBER = "+573116322584";
     public static final LocalDate VALID_USER_DATE_OF_BIRTH = LocalDate.parse("1990-08-11");
     public static final String VALID_USER_ID_DOCUMENT = "123123123123";

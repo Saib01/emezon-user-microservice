@@ -33,8 +33,8 @@ class RoleJpaAdapterTest {
     @Test
     @DisplayName("Should save the rol and verify that the rol repository method is called once")
     void saveRol() {
-        RoleEntity roleEntity = new RoleEntity(VALID_ID, VALID_USER_ROLE, VALID_USER_ROLE_DESCRIPTION);
-        Role role = new Role(VALID_ID, VALID_USER_ROLE, VALID_USER_ROLE_DESCRIPTION);
+        RoleEntity roleEntity = new RoleEntity(VALID_ID, VALID_USER_ROLE_AUX, VALID_USER_ROLE_DESCRIPTION);
+        Role role = new Role(VALID_ID,VALID_USER_ROLE_AUX, VALID_USER_ROLE_DESCRIPTION);
 
         when(roleEntityMapper.toRoleEntity(role)).thenReturn(roleEntity);
         when(this.roleRepository.save(roleEntity)).thenReturn(roleEntity);

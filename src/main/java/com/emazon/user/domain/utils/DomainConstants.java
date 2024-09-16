@@ -11,7 +11,8 @@ public class DomainConstants {
     public static final String PROPERTY_EMAIL = "Email";
     public static final Long MINIMUM_AGE_REQUIRED = 18L;
     public static final String ROLE_PREFIX = "ROLE_";
-    public static final String AUX_USER_DESCRIPTION = "This is an auxiliary user";
+    public static final String AUX_ROLE_DESCRIPTION = "This is an auxiliary user";
+    public static final String CLIENT_ROLE_DESCRIPTION ="This is a client user";
     public static final String KEY_TEMPLATE="User%s%s";
 
     private DomainConstants() {

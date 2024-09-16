@@ -9,9 +9,9 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
-import static com.emazon.user.infraestructure.util.InfraestructureRestControllerConstants.APPLICATION_JSON;
 import static com.emazon.user.infraestructure.util.InfrastructureConstants.TEMPLATE_RESPONSE_ERROR;
 import static java.lang.String.format;
+import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 
 @Component
 public class CustomAccessDeniedHandler implements AccessDeniedHandler {
@@ -22,7 +22,7 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException)
             throws IOException, ServletException {
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-        response.setContentType(APPLICATION_JSON);
+        response.setContentType(APPLICATION_JSON_VALUE);
         response.getWriter().write(format(TEMPLATE_RESPONSE_ERROR,ACCESS_DENIED));
     }
 }

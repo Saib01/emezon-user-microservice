@@ -18,7 +18,7 @@ class UserRequestMapperTest {
     @DisplayName("Should map UserRequest to User correctly")
     void shouldMapUserRequestToUser() {
 
-        RoleRequest roleRequest = new RoleRequest(VALID_USER_ROLE, VALID_USER_ROLE_DESCRIPTION);
+        RoleRequest roleRequest = new RoleRequest(VALID_USER_ROLE_AUX, VALID_USER_ROLE_DESCRIPTION);
         UserBasicRequest userBasicRequest = new UserBasicRequest(VALID_USER_NAME, VALID_USER_LAST_NAME, VALID_USER_ID_DOCUMENT, VALID_USER_PHONE_NUMBER, VALID_USER_DATE_OF_BIRTH, VALID_USER_PASSWORD, VALID_USER_EMAIL);
         UserRequest userRequest = UserRequest.from(userBasicRequest, roleRequest);
         User result = userRequestMapper.toUser(userRequest);

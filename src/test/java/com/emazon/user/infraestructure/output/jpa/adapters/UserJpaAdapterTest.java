@@ -35,14 +35,14 @@ class UserJpaAdapterTest {
     @Test
     @DisplayName("Should save the user and verify that the user repository method is called once")
     void saveUser() {
-        RoleEntity roleEntity = new RoleEntity(VALID_ID, VALID_USER_ROLE, VALID_USER_ROLE_DESCRIPTION);
+        RoleEntity roleEntity = new RoleEntity(VALID_ID, VALID_USER_ROLE_AUX, VALID_USER_ROLE_DESCRIPTION);
         UserEntity userEntity = new UserEntity(VALID_ID, VALID_USER_NAME, VALID_USER_LAST_NAME, VALID_USER_ID_DOCUMENT,
                 VALID_USER_PHONE_NUMBER, VALID_USER_DATE_OF_BIRTH, VALID_USER_PASSWORD, VALID_USER_EMAIL,
                 roleEntity);
         User user = new User(VALID_USER_NAME, VALID_USER_LAST_NAME, VALID_USER_ID_DOCUMENT,
                 VALID_USER_PHONE_NUMBER, VALID_USER_DATE_OF_BIRTH, VALID_USER_PASSWORD, VALID_USER_EMAIL);
         user.setId(VALID_ID);
-        user.setRole(new Role(VALID_ID, VALID_USER_ROLE, VALID_USER_ROLE_DESCRIPTION));
+        user.setRole(new Role(VALID_ID, VALID_USER_ROLE_AUX, VALID_USER_ROLE_DESCRIPTION));
 
         when(userEntityMapper.toUserEntity(user)).thenReturn(userEntity);
         userJpaAdapter.saveUser(user);

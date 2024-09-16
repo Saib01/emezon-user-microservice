@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import static com.emazon.user.infraestructure.util.InfraestructureRestControllerConstants.*;
+import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -26,7 +27,7 @@ public class AuthenticationRestController {
 
     @Operation(summary = USER_LOGIN)
     @ApiResponses(value = {
-            @ApiResponse(responseCode = RESPONSE_CODE_SUCCESS, description = RESPONSE_DESCRIPTION_LOGIN_SUCCESSFUL, content = @Content(mediaType = APPLICATION_JSON, schema = @Schema(implementation = AuthResponse.class))),
+            @ApiResponse(responseCode = RESPONSE_CODE_SUCCESS, description = RESPONSE_DESCRIPTION_LOGIN_SUCCESSFUL, content = @Content(mediaType = APPLICATION_JSON_VALUE, schema = @Schema(implementation = AuthResponse.class))),
             @ApiResponse(responseCode = RESPONSE_CODE_UNAUTHORIZED, description = RESPONSE_DESCRIPTION_UNAUTHORIZED, content = @Content)
     })
     @PostMapping
