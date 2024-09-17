@@ -52,4 +52,5 @@ class UserJpaAdapterTest {
         verify(userRepository, times(1)).save(userEntityCaptor.capture());
         assertEquals(userEntityCaptor.getValue(), userEntity);
     }
+
 }

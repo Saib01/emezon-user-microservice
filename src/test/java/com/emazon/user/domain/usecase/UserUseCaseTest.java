@@ -242,4 +242,26 @@ class UserUseCaseTest {
 
         assertThrows(UserDateOfBirthInvalidException.class, () -> userUseCase.saveUser(user,VALID_USER_ROLE_AUX, VALID_USER_ROLE_DESCRIPTION));
     }
+
+    @Test
+    @DisplayName("Should return false when the email exist")
+    void shouldReturnFalseWhenEmailNameExist() {
+        String email="mail@mail.com";
+        when(this.userPersistencePort.isEmailAlreadyInUse(email)).thenReturn(true);
+
+        boolean result=this.userUseCase.isUserEmailAvailable(email);
+        assertEquals(false,result);
+    }
+
+    @Test
+    @DisplayName("Should return false when the id document exist")
+    void shouldReturnFalseWhenIdDocumentExist() {
+        String idDocument ="123123123123123";
+        when(this.userPersistencePort.isIdDocumentAlreadyInUse(idDocument)).thenReturn(true);
+
+        boolean result=this.userUseCase.isIdDocumentAvailable(idDocument);
+        assertEquals(false,result);
+    }
+
+
 }

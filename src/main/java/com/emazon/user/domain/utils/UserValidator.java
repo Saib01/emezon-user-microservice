@@ -28,22 +28,22 @@ public class UserValidator {
     private static final Map<String, Supplier<RuntimeException>> EXCEPTION_MAP = new HashMap<>();
 
     static {
-        EXCEPTION_MAP.put(format(KEY_TEMPLATE,PROPERTY_NAME,TYPE_EXCEPTIONS[0]), () -> new UserNameRequiredException(USER_NAME_REQUIRED.getMessage()));
-        EXCEPTION_MAP.put(format(KEY_TEMPLATE,PROPERTY_LAST_NAME,TYPE_EXCEPTIONS[0]), () -> new UserLastNameRequiredException(USER_LAST_NAME_REQUIRED.getMessage()));
-        EXCEPTION_MAP.put(format(KEY_TEMPLATE,PROPERTY_ID_DOCUMENT,TYPE_EXCEPTIONS[0]), () -> new UserIdDocumentRequiredException(USER_ID_DOCUMENT_REQUIRED.getMessage()));
-        EXCEPTION_MAP.put(format(KEY_TEMPLATE,PROPERTY_PHONE_NUMBER,TYPE_EXCEPTIONS[0]), () -> new UserPhoneNumberRequiredException(USER_PHONE_NUMBER_REQUIRED.getMessage()));
-        EXCEPTION_MAP.put(format(KEY_TEMPLATE,PROPERTY_DATE_OF_BIRTH,TYPE_EXCEPTIONS[0]), () -> new UserDateOfBirthRequiredException(USER_DATE_OF_BIRTH_REQUIRED.getMessage()));
-        EXCEPTION_MAP.put(format(KEY_TEMPLATE,PROPERTY_PASSWORD,TYPE_EXCEPTIONS[0]), () -> new UserPasswordRequiredException(USER_PASSWORD_REQUIRED.getMessage()));
-        EXCEPTION_MAP.put(format(KEY_TEMPLATE,PROPERTY_EMAIL,TYPE_EXCEPTIONS[0]), () -> new UserEmailRequiredException(USER_EMAIL_REQUIRED.getMessage()));
+        EXCEPTION_MAP.put(format(KEY_TEMPLATE, PROPERTY_NAME, TYPE_EXCEPTIONS[0]), () -> new UserNameRequiredException(USER_NAME_REQUIRED.getMessage()));
+        EXCEPTION_MAP.put(format(KEY_TEMPLATE, PROPERTY_LAST_NAME, TYPE_EXCEPTIONS[0]), () -> new UserLastNameRequiredException(USER_LAST_NAME_REQUIRED.getMessage()));
+        EXCEPTION_MAP.put(format(KEY_TEMPLATE, PROPERTY_ID_DOCUMENT, TYPE_EXCEPTIONS[0]), () -> new UserIdDocumentRequiredException(USER_ID_DOCUMENT_REQUIRED.getMessage()));
+        EXCEPTION_MAP.put(format(KEY_TEMPLATE, PROPERTY_PHONE_NUMBER, TYPE_EXCEPTIONS[0]), () -> new UserPhoneNumberRequiredException(USER_PHONE_NUMBER_REQUIRED.getMessage()));
+        EXCEPTION_MAP.put(format(KEY_TEMPLATE, PROPERTY_DATE_OF_BIRTH, TYPE_EXCEPTIONS[0]), () -> new UserDateOfBirthRequiredException(USER_DATE_OF_BIRTH_REQUIRED.getMessage()));
+        EXCEPTION_MAP.put(format(KEY_TEMPLATE, PROPERTY_PASSWORD, TYPE_EXCEPTIONS[0]), () -> new UserPasswordRequiredException(USER_PASSWORD_REQUIRED.getMessage()));
+        EXCEPTION_MAP.put(format(KEY_TEMPLATE, PROPERTY_EMAIL, TYPE_EXCEPTIONS[0]), () -> new UserEmailRequiredException(USER_EMAIL_REQUIRED.getMessage()));
 
 
-        EXCEPTION_MAP.put(format(KEY_TEMPLATE,PROPERTY_NAME,TYPE_EXCEPTIONS[1]), () -> new UserNameInvalidException(USER_NAME_INVALID.getMessage()));
-        EXCEPTION_MAP.put(format(KEY_TEMPLATE,PROPERTY_LAST_NAME,TYPE_EXCEPTIONS[1]), () -> new UserLastNameInvalidException(USER_LAST_NAME_INVALID.getMessage()));
-        EXCEPTION_MAP.put(format(KEY_TEMPLATE,PROPERTY_ID_DOCUMENT,TYPE_EXCEPTIONS[1]), () -> new UserIdDocumentInvalidException(USER_ID_DOCUMENT_INVALID.getMessage()));
-        EXCEPTION_MAP.put(format(KEY_TEMPLATE,PROPERTY_PHONE_NUMBER,TYPE_EXCEPTIONS[1]), () -> new UserPhoneNumberInvalidException(USER_PHONE_NUMBER_INVALID.getMessage()));
-        EXCEPTION_MAP.put(format(KEY_TEMPLATE,PROPERTY_DATE_OF_BIRTH,TYPE_EXCEPTIONS[1]), () -> new UserDateOfBirthInvalidException(USER_DATE_OF_BIRTH_INVALID.getMessage()));
-        EXCEPTION_MAP.put(format(KEY_TEMPLATE,PROPERTY_PASSWORD,TYPE_EXCEPTIONS[1]), () -> new UserPasswordInvalidException(USER_PASSWORD_INVALID.getMessage()));
-        EXCEPTION_MAP.put(format(KEY_TEMPLATE,PROPERTY_EMAIL,TYPE_EXCEPTIONS[1]), () -> new UserEmailInvalidException(USER_EMAIL_INVALID.getMessage()));
+        EXCEPTION_MAP.put(format(KEY_TEMPLATE, PROPERTY_NAME, TYPE_EXCEPTIONS[1]), () -> new UserNameInvalidException(USER_NAME_INVALID.getMessage()));
+        EXCEPTION_MAP.put(format(KEY_TEMPLATE, PROPERTY_LAST_NAME, TYPE_EXCEPTIONS[1]), () -> new UserLastNameInvalidException(USER_LAST_NAME_INVALID.getMessage()));
+        EXCEPTION_MAP.put(format(KEY_TEMPLATE, PROPERTY_ID_DOCUMENT, TYPE_EXCEPTIONS[1]), () -> new UserIdDocumentInvalidException(USER_ID_DOCUMENT_INVALID.getMessage()));
+        EXCEPTION_MAP.put(format(KEY_TEMPLATE, PROPERTY_PHONE_NUMBER, TYPE_EXCEPTIONS[1]), () -> new UserPhoneNumberInvalidException(USER_PHONE_NUMBER_INVALID.getMessage()));
+        EXCEPTION_MAP.put(format(KEY_TEMPLATE, PROPERTY_DATE_OF_BIRTH, TYPE_EXCEPTIONS[1]), () -> new UserDateOfBirthInvalidException(USER_DATE_OF_BIRTH_INVALID.getMessage()));
+        EXCEPTION_MAP.put(format(KEY_TEMPLATE, PROPERTY_PASSWORD, TYPE_EXCEPTIONS[1]), () -> new UserPasswordInvalidException(USER_PASSWORD_INVALID.getMessage()));
+        EXCEPTION_MAP.put(format(KEY_TEMPLATE, PROPERTY_EMAIL, TYPE_EXCEPTIONS[1]), () -> new UserEmailInvalidException(USER_EMAIL_INVALID.getMessage()));
     }
 
     private UserValidator() {
@@ -61,8 +61,8 @@ public class UserValidator {
 
     public static Role getRole(RoleEnum roleEnum, String roleDescription, IRolePersistencePort rolePersistencePort) {
         Role existRole = rolePersistencePort.findByRoleEnum(roleEnum);
-        if(existRole==null){
-            existRole=new Role(null,roleEnum,roleDescription);
+        if (existRole == null) {
+            existRole = new Role(null, roleEnum, roleDescription);
             existRole.setId(rolePersistencePort.saveRole(existRole));
         }
         return existRole;

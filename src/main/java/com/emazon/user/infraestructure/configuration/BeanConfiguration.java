@@ -2,13 +2,14 @@ package com.emazon.user.infraestructure.configuration;
 
 import com.emazon.user.domain.api.IAuthenticationServicePort;
 import com.emazon.user.domain.api.IUserServicePort;
+import com.emazon.user.domain.exeption.ExceptionResponseDomain;
 import com.emazon.user.domain.spi.IAuthenticationPersistencePort;
 import com.emazon.user.domain.spi.IRolePersistencePort;
 import com.emazon.user.domain.spi.IUserPersistencePort;
 import com.emazon.user.domain.usecase.AuthenticationUseCase;
 import com.emazon.user.domain.usecase.UserUseCase;
+import com.emazon.user.infraestructure.configuration.jwt.JwtPayload;
 import com.emazon.user.infraestructure.configuration.jwt.JwtUtils;
-import com.emazon.user.domain.exeption.ExceptionResponseDomain;
 import com.emazon.user.infraestructure.output.jpa.adapters.AuthenticationJpaAdapter;
 import com.emazon.user.infraestructure.output.jpa.adapters.RoleJpaAdapter;
 import com.emazon.user.infraestructure.output.jpa.adapters.UserJpaAdapter;
@@ -42,6 +43,7 @@ public class BeanConfiguration {
     private final IRoleRepository roleRepository;
     private final RoleEntityMapper roleEntityMapper;
     private final JwtUtils jwtUtils;
+    private final JwtPayload jwtPayload;
 
     @Bean
     IUserPersistencePort userPersistencePort() {
@@ -60,7 +62,7 @@ public class BeanConfiguration {
 
     @Bean
     IAuthenticationPersistencePort authenticationPersistencePort() throws Exception {
-        return new AuthenticationJpaAdapter(jwtUtils, authenticationManager(null));
+        return new AuthenticationJpaAdapter(jwtUtils, authenticationManager(null), userRepository, jwtPayload);
     }
 
     @Bean

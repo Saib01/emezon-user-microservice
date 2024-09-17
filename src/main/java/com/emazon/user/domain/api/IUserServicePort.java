@@ -9,4 +9,8 @@ public interface IUserServicePort {
     void saveAuxUser(User user);
 
     void saveClientUser(User user);
+
+    Boolean isUserEmailAvailable(String email);
+
+    Boolean isIdDocumentAvailable(String idDocument);
 }

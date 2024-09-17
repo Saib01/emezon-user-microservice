@@ -10,10 +10,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import static com.emazon.user.infraestructure.util.InfraestructureRestControllerConstants.*;
 
@@ -34,6 +31,7 @@ public class UserRestController {
         userHandler.saveAuxUser(userRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
+
     @Operation(summary = ADD_NEW_CLIENT_BODEGA)
     @ApiResponses(value = {
             @ApiResponse(responseCode = RESPONSE_CODE_CREATED, description = RESPONSE_DESCRIPTION_USER_CREATED, content = @Content),
@@ -44,5 +42,25 @@ public class UserRestController {
         UserRequest userRequest = UserRequest.from(userBasicRequest);
         userHandler.saveClientUser(userRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @Operation(summary = VALIDATE_USER_EMAIL)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = RESPONSE_CODE_SUCCESS, description = RESPONSE_DESCRIPTION_USER_EMAIL_SUCCESSFUL, content = @Content),
+            @ApiResponse(responseCode = RESPONSE_CODE_BAD_REQUEST, description = RESPONSE_DESCRIPTION_USER_EMAIL_INVALID_FORMAT, content = @Content)
+    })
+    @GetMapping("/validate-email")
+    ResponseEntity<Boolean> isUserEmailAvailable(@RequestParam String email) {
+        return ResponseEntity.ok(userHandler.isUserEmailAvailable(email));
+    }
+
+    @Operation(summary = VALIDATE_USER_ID_DOCUMENT)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = RESPONSE_CODE_SUCCESS, description = RESPONSE_DESCRIPTION_USER_ID_DOCUMENT, content = @Content),
+            @ApiResponse(responseCode = RESPONSE_CODE_BAD_REQUEST, description = RESPONSE_DESCRIPTION_USER_ID_DOCUMENT_INVALID_FORMAT, content = @Content)
+    })
+    @GetMapping("/validate-id-document")
+    ResponseEntity<Boolean> isIdDocumentAvailable(@RequestParam String idDocument) {
+        return ResponseEntity.ok(userHandler.isIdDocumentAvailable(idDocument));
     }
 }

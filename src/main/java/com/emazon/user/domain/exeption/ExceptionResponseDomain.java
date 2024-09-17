@@ -23,8 +23,7 @@ public enum ExceptionResponseDomain {
     USER_EMAIL_ALREADY_EXISTS(format(ALREADY_EXISTS, MODEL_USER, PROPERTY_EMAIL)),
     USER_ID_DOCUMENT_ALREADY_EXISTS(format(ALREADY_EXISTS, MODEL_USER, PROPERTY_ID_DOCUMENT)),
     USER_PASSWORD_INCORRECT(AUTHENTICATION_ERROR),
-    USER_NOT_FOUND("User not found."),
-    JWT_INVALID("Token Invalid, not Authorized");
+    USER_NOT_FOUND("User not found.");
     private final String message;
 
     ExceptionResponseDomain(String message) {

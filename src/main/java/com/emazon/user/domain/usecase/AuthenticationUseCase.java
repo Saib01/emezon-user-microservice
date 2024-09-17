@@ -4,6 +4,8 @@ import com.emazon.user.domain.api.IAuthenticationServicePort;
 import com.emazon.user.domain.exeption.user.UserBadCredentialsException;
 import com.emazon.user.domain.spi.IAuthenticationPersistencePort;
 
+import java.util.Map;
+
 import static com.emazon.user.domain.exeption.ExceptionResponseDomain.USER_PASSWORD_INCORRECT;
 
 public class AuthenticationUseCase implements IAuthenticationServicePort {
@@ -20,5 +22,10 @@ public class AuthenticationUseCase implements IAuthenticationServicePort {
         } catch (RuntimeException e) {
             throw new UserBadCredentialsException(USER_PASSWORD_INCORRECT.getMessage());
         }
+    }
+
+    @Override
+    public Map<String, String> getJwtPayload() {
+        return this.authenticationPersistencePort.getJwtPayload();
     }
 }

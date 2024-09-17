@@ -29,4 +29,14 @@ public class UserHandler implements IUserHandler {
                 userRequestMapper.toUser(userRequest)
         );
     }
+
+    @Override
+    public Boolean isIdDocumentAvailable(String idDocument) {
+        return userServicePort.isIdDocumentAvailable(idDocument);
+    }
+
+    @Override
+    public Boolean isUserEmailAvailable(String email) {
+        return userServicePort.isUserEmailAvailable(email);
+    }
 }

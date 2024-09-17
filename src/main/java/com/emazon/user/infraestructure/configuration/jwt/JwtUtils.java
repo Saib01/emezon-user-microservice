@@ -7,7 +7,6 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.emazon.user.domain.exeption.ExceptionResponseDomain;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -19,17 +18,19 @@ import static com.emazon.user.infraestructure.util.InfrastructureConstants.*;
 
 @Component
 public class JwtUtils {
+    private static final String ID = "id";
     @Value(JWT_KEY_GENERATOR)
     private String privateKey;
     @Value(JWT_USER_GENERATOR)
     private String userGenerator;
 
-    public String createToken(String username, String authorities) {
+    public String createToken(String username, String authorities, Long id) {
         Algorithm algorithm = Algorithm.HMAC256(this.privateKey);
         return JWT.create()
                 .withIssuer(this.userGenerator)
                 .withSubject(username)
                 .withClaim(AUTHORITIES, authorities)
+                .withClaim(ID, id)
                 .withIssuedAt(new Date())
                 .withExpiresAt(new Date(System.currentTimeMillis() + JWT_TIME_EXPIRATION))
                 .withJWTId(UUID.randomUUID().toString())
@@ -45,7 +46,7 @@ public class JwtUtils {
                     .build();
             return verifier.verify(token);
         } catch (JWTVerificationException exception) {
-           throw new JWTVerificationException(ExceptionResponseDomain.JWT_INVALID.getMessage());
+            return null;
         }
     }
 
