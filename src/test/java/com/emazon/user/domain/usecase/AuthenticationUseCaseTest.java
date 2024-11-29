@@ -3,6 +3,7 @@ package com.emazon.user.domain.usecase;
 
 import com.emazon.user.domain.exeption.user.UserBadCredentialsException;
 import com.emazon.user.domain.spi.IAuthenticationPersistencePort;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -10,6 +11,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.Map;
+
+import static com.emazon.user.application.dtos.JwtPayloadResponse.EMAIL_STRING;
+import static com.emazon.user.application.dtos.JwtPayloadResponse.ID_STRING;
+import static com.emazon.user.application.util.ApplicationConstants.ROLE;
+import static com.emazon.user.domain.utils.RoleEnum.ADMIN;
 import static com.emazon.user.utils.TestConstants.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -53,6 +60,22 @@ class AuthenticationUseCaseTest {
         assertThrows(UserBadCredentialsException.class, () -> {
             authenticationUseCase.loginUser(VALID_USER_EMAIL, INVALID_USER_PASSWORD);
         });
+    }
+
+
+
+    @Test
+    @DisplayName("Should return the jwt payload in a map")
+    void shouldReturnJwtPayloadInAMap() {
+        Map<String,String> jwtPayloadMap= Map.of(
+                ID_STRING, VALID_ID.toString(),
+                EMAIL_STRING, VALID_USER_EMAIL,
+                ROLE, ADMIN.toString()
+        );
+        when(this.authenticationPersistencePort.getJwtPayload()).thenReturn(jwtPayloadMap);
+
+        Map<String,String> result=this.authenticationUseCase.getJwtPayload();
+        Assertions.assertEquals(jwtPayloadMap,result);
     }
 
 }

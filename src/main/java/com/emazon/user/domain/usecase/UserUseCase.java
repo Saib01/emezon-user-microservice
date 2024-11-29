@@ -6,7 +6,6 @@ import com.emazon.user.domain.spi.IRolePersistencePort;
 import com.emazon.user.domain.spi.IUserPersistencePort;
 import com.emazon.user.domain.utils.RoleEnum;
 
-
 import static com.emazon.user.domain.utils.DomainConstants.AUX_ROLE_DESCRIPTION;
 import static com.emazon.user.domain.utils.DomainConstants.CLIENT_ROLE_DESCRIPTION;
 import static com.emazon.user.domain.utils.UserValidator.*;
@@ -29,7 +28,7 @@ public class UserUseCase implements IUserServicePort {
         validateIdDocumentIsAlreadyInUse(user, userPersistencePort);
         validateEmailIsAlreadyInUse(user, userPersistencePort);
 
-        user.setRole(getRole(roleEnum,roleDescription, rolePersistencePort));
+        user.setRole(getRole(roleEnum, roleDescription, rolePersistencePort));
         user.setPassword(this.userPersistencePort.hashPassword(user.getPassword()));
 
         this.userPersistencePort.saveUser(user);
@@ -43,5 +42,15 @@ public class UserUseCase implements IUserServicePort {
     @Override
     public void saveClientUser(User user) {
         saveUser(user, RoleEnum.CLIENT, CLIENT_ROLE_DESCRIPTION);
+    }
+
+    @Override
+    public Boolean isUserEmailAvailable(String email) {
+        return !userPersistencePort.isEmailAlreadyInUse(email);
+    }
+
+    @Override
+    public Boolean isIdDocumentAvailable(String idDocument) {
+        return !userPersistencePort.isIdDocumentAlreadyInUse(idDocument);
     }
 }

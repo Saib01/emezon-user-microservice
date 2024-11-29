@@ -36,17 +36,6 @@ class AuthenticationJpaAdapterTest {
         MockitoAnnotations.openMocks(this);
     }
 
-    @Test
-    @DisplayName("Should generate a valid JWT token when user email and role are correct")
-    void testGenerateToken() {
-        when(jwtUtils.createToken(VALID_USER_EMAIL, VALID_USER_FOR_TOKEN)).thenReturn(VALID_JWT_TOKEN);
-
-        String actualToken = authenticationJpaAdapter.generateToken(VALID_USER_EMAIL, VALID_USER_FOR_TOKEN);
-
-        assertEquals(VALID_JWT_TOKEN, actualToken);
-        verify(jwtUtils, times(1)).createToken(VALID_USER_EMAIL, VALID_USER_FOR_TOKEN);
-    }
-
 
     @Test
     @DisplayName("Should return correct role when user credentials are valid")

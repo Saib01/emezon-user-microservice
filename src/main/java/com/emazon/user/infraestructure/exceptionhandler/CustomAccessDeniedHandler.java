@@ -16,13 +16,13 @@ import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 @Component
 public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 
-    private static final String ACCESS_DENIED="Access Denied: You do not have permission to access this resource.";
+    private static final String ACCESS_DENIED = "Access Denied: You do not have permission to access this resource.";
 
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException)
             throws IOException, ServletException {
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
         response.setContentType(APPLICATION_JSON_VALUE);
-        response.getWriter().write(format(TEMPLATE_RESPONSE_ERROR,ACCESS_DENIED));
+        response.getWriter().write(format(TEMPLATE_RESPONSE_ERROR, ACCESS_DENIED));
     }
 }
